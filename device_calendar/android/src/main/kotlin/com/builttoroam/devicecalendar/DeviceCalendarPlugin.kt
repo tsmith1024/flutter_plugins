@@ -74,7 +74,7 @@ class DeviceCalendarPlugin() : MethodCallHandler {
                 _calendarDelegate.retrieveCalendars(result)
             }
             RETRIEVE_EVENTS_METHOD -> {
-                val calendarId = call.argument<String>(CALENDAR_ID_ARGUMENT)
+                val calendarId = call.argument<String>(CALENDAR_ID_ARGUMENT) ?: ""
                 val startDate = call.argument<Long>(CALENDAR_EVENTS_START_DATE_ARGUMENT)
                 val endDate = call.argument<Long>(CALENDAR_EVENTS_END_DATE_ARGUMENT)
                 val eventIds = call.argument<List<String>>(CALENDAR_EVENTS_IDS_ARGUMENT) ?: listOf()
@@ -82,12 +82,12 @@ class DeviceCalendarPlugin() : MethodCallHandler {
                 _calendarDelegate.retrieveEvents(calendarId, startDate, endDate, eventIds, result)
             }
             CREATE_OR_UPDATE_EVENT_METHOD -> {
-                val calendarId = call.argument<String>(CALENDAR_ID_ARGUMENT)
-                val eventId = call.argument<String>(EVENT_ID_ARGUMENT)
-                val eventTitle = call.argument<String>(EVENT_TITLE_ARGUMENT)
-                val eventDescription = call.argument<String>(EVENT_DESCRIPTION_ARGUMENT)
-                val eventStart = call.argument<Long>(EVENT_START_DATE_ARGUMENT)
-                val eventEnd = call.argument<Long>(EVENT_END_DATE_ARGUMENT)
+                val calendarId = call.argument<String>(CALENDAR_ID_ARGUMENT) ?: ""
+                val eventId = call.argument<String>(EVENT_ID_ARGUMENT) ?: ""
+                val eventTitle = call.argument<String>(EVENT_TITLE_ARGUMENT) ?: ""
+                val eventDescription = call.argument<String>(EVENT_DESCRIPTION_ARGUMENT) ?: ""
+                val eventStart = call.argument<Long>(EVENT_START_DATE_ARGUMENT) ?: 0.0.toLong()
+                val eventEnd = call.argument<Long>(EVENT_END_DATE_ARGUMENT) ?: 0.0.toLong()
 
                 val event = Event(eventTitle)
                 event.calendarId = calendarId
@@ -99,8 +99,8 @@ class DeviceCalendarPlugin() : MethodCallHandler {
                 _calendarDelegate.createOrUpdateEvent(calendarId, event, result)
             }
             DELETE_EVENT_METHOD -> {
-                val calendarId = call.argument<String>(CALENDAR_ID_ARGUMENT)
-                val eventId = call.argument<String>(EVENT_ID_ARGUMENT)
+                val calendarId = call.argument<String>(CALENDAR_ID_ARGUMENT) ?: ""
+                val eventId = call.argument<String>(EVENT_ID_ARGUMENT) ?: ""
 
                 _calendarDelegate.deleteEvent(calendarId, eventId, result)
             }
